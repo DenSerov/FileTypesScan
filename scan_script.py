@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import re
+import tempfile
 
 start=time.time()
 ext_set=set()
@@ -36,7 +37,7 @@ if os.name=='nt':
     try: os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat')
 
     except:
-        print("Error with listing",path)
+        print("Error with listing.  Script aborted for ",path)
         exit()
 else:
     print('Linux detected. Running directory scan for',path)

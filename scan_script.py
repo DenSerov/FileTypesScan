@@ -50,12 +50,13 @@ while l:
 
     if os.name=='nt':
         try:
-            size =int(l[21:39])
             total_count+=1
+            size =int(l[21:39])
         except:
             l=f.readline()
             continue
         fname=l[39:]
+        if size==0: size=len(fname)
         if '.' in fname[1:]:
             ext=fname[1:].split('.')[-1][:-1]
         else:
@@ -66,6 +67,7 @@ while l:
         fline=re.split('[:]\d\d\s',l)[-1][:]
         words=re.findall(r'[\S]+', l)
         size=int(words[2])
+        if size==0: size=len(fline)
         words=re.split('[.]',fline)
 
         if len(words)<2:

@@ -41,7 +41,7 @@ if os.name=='nt':
         exit()
 else:
     print('Linux detected. Running directory scan for',path)
-    os.system("ls -Rl "+path+" | grep -i '^-[\S\s]*'  > tmp1.dat")
+    os.system("ls -gGR1 --time-style=long-iso "+path+" | grep -i '^-[\S\s]*'  > tmp1.dat")
 
 f=open('tmp1.dat')
 l=f.readline()
@@ -63,9 +63,9 @@ while l:
 
     elif os.name=='posix':
         total_count+=1
-        fline=re.split('[:]\d\d',l)[-1][:]
+        fline=re.split('[:]\d\d\s',l)[-1][:]
         words=re.findall(r'[\S]+', l)
-        size=int(words[4])
+        size=int(words[2])
         words=re.split('[.]',fline)
 
         if len(words)<2:

@@ -34,14 +34,14 @@ if os.name=='nt':
         os.system('compact /q /c /exe lzx tmp1.dat')
         print('Temporary file is compressed.')
     except: pass
-    try: os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat')
+    try: os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat 2>NUL')
 
     except:
         print("Error with listing.  Script aborted for ",path)
         exit()
 else:
     print('Linux detected. Running directory scan for',path)
-    os.system("ls -gGR1 --time-style=long-iso "+path+" | grep -i '^-[\S\s]*'  > tmp1.dat")
+    os.system("ls -gGR1 --time-style=long-iso "+path+" 2>/dev/null | grep -i '^-[\S\s]*'  > tmp1.dat")
 
 f=open('tmp1.dat')
 l=f.readline()

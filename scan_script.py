@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import os
 import sys
@@ -26,8 +26,8 @@ if len(sys.argv)<2:
 
 else: path=sys.argv[1]
 
-f=open('tmp1.dat','w')
-f.close()
+#f=open('tmp1.dat','w')
+#f.close()
 
 f=tempfile.mktemp()
 ftmp_name=f
@@ -35,10 +35,6 @@ print(f,"was created for storing temporary data")
 
 if os.name=='nt':
     print('Windows detected. Running directory scan for',path)
-    try:
-        os.system('compact /q /c /exe lzx tmp1.dat')
-        print('Temporary file is compressed.')
-    except: pass
     try: #os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat 2>NUL')
         os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" 2>NUL >'+ftmp_name)
     except:

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding: utf-8
 import os
 import sys
 import time
@@ -27,6 +29,9 @@ else: path=sys.argv[1]
 f=open('tmp1.dat','w')
 f.close()
 
+f=tempfile.mktemp()
+ftmp_name=f
+print(f,"was created for storing temporary data")
 
 if os.name=='nt':
     print('Windows detected. Running directory scan for',path)
@@ -34,16 +39,18 @@ if os.name=='nt':
         os.system('compact /q /c /exe lzx tmp1.dat')
         print('Temporary file is compressed.')
     except: pass
-    try: os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat 2>NUL')
-
+    try: #os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" > tmp1.dat 2>NUL')
+        os.system('dir /A-D /N /S /-C '+path+' | findstr -R "^[0-9][0-9].*$" 2>NUL >'+ftmp_name)
     except:
         print("Error with listing.  Script aborted for ",path)
         exit()
 else:
     print('Linux detected. Running directory scan for',path)
-    os.system("ls -gGR1 --time-style=long-iso "+path+" 2>/dev/null | grep -i '^-[\S\s]*'  > tmp1.dat")
+    #os.system("ls -gGR1 --time-style=long-iso "+path+" 2>/dev/null | grep -i '^-[\S\s]*'  > tmp1.dat")
+    os.system("ls -gGR1 --time-style=long-iso "+path+" 2>/dev/null | grep -i '^-[\S\s]*'  >"+ftmp_name)
 
-f=open('tmp1.dat')
+#f=open('tmp1.dat')
+f=open(ftmp_name)
 l=f.readline()
 
 while l:
@@ -146,3 +153,4 @@ print("\n\nTotal space used by all files is {0:8,.2f} GiB".format(total_size_GiB
 print("Space used by compressed files is {0:7,.2f} GiB, which is {1:3d}% of all data.".format(size_cmp,pct_cmp))
 print("Total number of file types found is {0:<5,d}".format(len(ext_dic)))
 print("Total number of files found is {0:<10,d}\n\n".format(total_count))
+os.remove(ftmp_name)
